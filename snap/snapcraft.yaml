@@ -1,0 +1,201 @@
+name: ignition-gazebo
+version: "fortress"
+summary: Ignition
+description: |
+  Ignition Robotics is a curated set of open-source libraries
+  that encapsulate all the essentials for robotic simulation.
+
+grade: devel
+confinement: strict
+base: core20
+
+package-repositories:
+  # For dart/ogre
+  - components: [main]
+    formats: [deb]
+    key-id: D2486D2DD83DB69272AFE98867170598AF249743
+    key-server: keyserver.ubuntu.com
+    suites: [focal]
+    type: apt
+    url: http://packages.osrfoundation.org/gazebo/ubuntu-stable
+
+parts:
+
+  ignition:
+    after: [kde-neon-extension]
+    plugin: colcon
+    source: .
+    colcon-cmake-args:
+      - "-DBUILD_TESTING=OFF"
+      - "-DBUILD_DOCS=OFF"
+      # - "-DENABLE_TESTING=OFF"
+      - "-DCMAKE_BUILD_TYPE=Release"
+      # - "-DKDE_INSTALL_USE_QT_SYS_PATHS=ON"
+      # - "-DKDE_SKIP_TEST_SETTINGS=ON"
+
+      # - "-DCMAKE_FIND_ROOT_PATH=/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current"
+      # "-DCMAKE_FIND_ROOT_PATH=/usr\\;/root/stage\\;/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current"
+
+      - "-Wno-unused-variable"
+
+      # - "-DCMAKE_BUILD_TYPE=Debug"
+      - "-DCMAKE_C_COMPILER_LAUNCHER=ccache"
+      - "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+
+      - "${SNAPCRAFT_CMAKE_ARGS}"
+
+      - "--event-handlers=console_direct+"
+    # build-snaps:
+    #   - kde-frameworks-5-qt-5-15-3-core20
+    #   - kde-frameworks-5-qt-5-15-3-core20-sdk
+    build-environment:
+      - CMAKE_PREFIX_PATH: "/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current"
+      # - CMAKE_PREFIX_PATH: "${SNAPCRAFT_STAGE}"
+    #   - LD_LIBRARY_PATH: "/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current"
+    build-packages:
+      - wget
+      - git
+      - python3-vcstool
+      - ccache
+      - binutils-dev
+      - build-essential
+      - cmake
+      - curl
+      - freeglut3-dev
+      - libavdevice-dev
+      - libbenchmark-dev
+      - libcurl4-openssl-dev
+      - libdart-collision-bullet-dev
+      - libdart-collision-ode-dev
+      - libdart-dev
+      - libdart-external-ikfast-dev
+      - libdart-external-odelcpsolver-dev
+      - libdart-utils-urdf-dev
+      - libeigen3-dev
+      - libfreeimage-dev
+      - libgflags-dev
+      - libglew-dev
+      - libgts-dev
+      - libjsoncpp-dev
+      - libogre-1.9-dev
+      - libogre-2.1-dev
+      - libogre-2.2-dev
+      - libprotobuf-dev
+      - libprotoc-dev
+      - libsqlite3-dev
+      - libtinyxml2-dev
+      - liburdfdom-dev
+      - libwebsockets-dev
+      - libxi-dev
+      - libxml2-utils
+      - libxmu-dev
+      - libyaml-dev
+      - libzip-dev
+      - libzmq3-dev
+      - pkg-config
+      - protobuf-compiler
+      - python3-distutils
+      - python3-psutil
+      - python3-pybind11
+      - python-yaml
+      #
+      # Do not explicitely install Qt-things.
+      # They are provided by the kde build-snap (kde-neon extension).
+      # Same thing for stage-packages.
+      #
+      # - qml-module-qtcharts
+      # - qml-module-qtgraphicaleffects
+      # - qml-module-qt-labs-folderlistmodel
+      # - qml-module-qt-labs-platform
+      # - qml-module-qt-labs-settings
+      # - qml-module-qtlocation
+      # - qml-module-qtpositioning
+      # - qml-module-qtqml-models2
+      # - qml-module-qtquick2
+      # - qml-module-qtquick-controls
+      # - qml-module-qtquick-controls2
+      # - qml-module-qtquick-dialogs
+      # - qml-module-qtquick-layouts
+      # - qml-module-qtquick-templates2
+      # - qml-module-qtquick-window2
+      # - qtbase5-dev
+      # - qtdeclarative5-dev
+      # - qtquickcontrols2-5-dev
+      - rubocop
+      - ruby
+      - ruby-dev
+      - ruby-ronn
+      - swig
+      - uuid-dev
+      - xvfb
+
+    stage-packages:
+      - libcurl4
+      - libyaml-dev
+      - libjsoncpp1
+      - libassimp5
+      - libboost-regex1.71.0
+      - libboost-thread1.71.0
+      - libccd2
+      - libconsole-bridge0.4
+      - libev4
+      - libfcl0.5
+      - libfreeimage3
+      - libbinutils
+      - libgts-0.7-5
+      - libilmbase24
+      - libjxr0
+      - libnorm1
+      - liboctomap1.9
+      - libode8
+      - libopenexr24
+      - libpgm-5.2-0
+      - libprotobuf17
+      - libraw19
+      - libruby2.7
+      - libsodium23
+      - libtinyxml2-6a
+      - libtinyxml2.6.2v5
+      - liburdfdom-model
+      - libwebsockets15
+      - libxaw7
+      - libxmu6
+      - libxpm4
+      - libzmq5
+      - libdart6
+      - libdart6-collision-bullet
+      - libdart6-collision-ode
+      - libdart6-external-odelcpsolver
+      - libogre-1.9.0v5
+      - libogre-2.2
+      - ros-foxy-ros-environment
+
+    override-pull: |
+      if [ ! -f collection-fortress.yaml ]; then wget https://raw.githubusercontent.com/ignition-tooling/gazebodistro/master/collection-fortress.yaml; fi
+      vcs import < collection-fortress.yaml
+
+      sed -i 's|\${CMAKE_INSTALL_PREFIX}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-gazebo/include/ignition/gazebo/config.hh.in
+      sed -i 's|\${CMAKE_INSTALL_PREFIX}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-gui/include/ignition/gui/config.hh.in
+      sed -i 's|@IGN_SENSORS_PLUGIN_PATH@|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-sensors/include/ignition/sensors/config.hh.in
+      sed -i 's|\${IGNITION_RENDERING_ENGINE_INSTALL_DIR}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-rendering/include/ignition/rendering/config.hh.in
+
+    override-build: |
+      snapcraftctl build
+      for entry in "$SNAPCRAFT_PART_INSTALL/opt/ros/snap/share/ignition"/*.yaml; do
+        sed -i "s|$SNAPCRAFT_PART_INSTALL|/snap/$SNAPCRAFT_PROJECT_NAME/current|" "$entry"
+      done
+
+apps:
+  ign:
+    environment:
+      RUBYLIB: '$SNAP/usr/local/lib/site_ruby/2.7.0:$SNAP/usr/local/lib/$SNAPCRAFT_ARCH_TRIPLET/site_ruby:$SNAP/usr/local/lib/site_ruby:$SNAP/usr/lib/ruby/vendor_ruby/2.7.0:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/ruby/vendor_ruby/2.7.0:$SNAP/usr/lib/ruby/vendor_ruby:$SNAP/usr/lib/ruby/2.7.0:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/ruby/2.7.0'
+      IGN_HOMEDIR: '$SNAP_USER_DATA'
+      IGN_CONFIG_PATH: '$SNAP/opt/ros/snap/share/ignition'
+      IGN_RENDERING_RESOURCE_PATH: '$SNAP/opt/ros/snap/share/ignition/ignition-rendering3'
+      IGN_GAZEBO_PHYSICS_ENGINE_PATH: '$SNAP/opt/ros/snap/lib/ign-physics-2/engine-plugins'
+      OGRE_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-1.9.0'
+      OGRE2_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-2.1/OGRE'
+      ROS_DISTRO: foxy
+    command: usr/bin/ruby $SNAP/opt/ros/snap/bin/ign
+    plugs: [network, network-bind, opengl, home]
+    extensions: [kde-neon, ros2-foxy]
