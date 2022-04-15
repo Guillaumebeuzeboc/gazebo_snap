@@ -45,9 +45,6 @@ parts:
       - "${SNAPCRAFT_CMAKE_ARGS}"
 
       - "--event-handlers=console_direct+"
-    # build-snaps:
-    #   - kde-frameworks-5-qt-5-15-3-core20
-    #   - kde-frameworks-5-qt-5-15-3-core20-sdk
     build-environment:
       - CMAKE_PREFIX_PATH: "/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current"
       # - CMAKE_PREFIX_PATH: "${SNAPCRAFT_STAGE}"
@@ -169,6 +166,10 @@ parts:
       - libogre-1.9.0v5
       - libogre-2.2
       - ros-foxy-ros-environment
+      - libstdc++6
+      - libgcc1
+      - libc6
+      - libyaml-0-2
 
     override-pull: |
       if [ ! -f collection-fortress.yaml ]; then wget https://raw.githubusercontent.com/ignition-tooling/gazebodistro/master/collection-fortress.yaml; fi
@@ -196,6 +197,7 @@ apps:
       OGRE_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-1.9.0'
       OGRE2_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-2.1/OGRE'
       ROS_DISTRO: foxy
+      LD_LIBRARY_PATH: ${SNAP}/usr/lib/x86_64-linux-gnu/:${SNAP}/opt/ros/snap/lib:${LD_LIBRARY_PATH}
     command: usr/bin/ruby $SNAP/opt/ros/snap/bin/ign
-    plugs: [network, network-bind, opengl, home]
+    plugs: [network, network-bind, home]
     extensions: [kde-neon, ros2-foxy]
