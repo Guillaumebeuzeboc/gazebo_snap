@@ -95,29 +95,6 @@ parts:
       - python3-psutil
       - python3-pybind11
       - python-yaml
-      #
-      # Do not explicitely install Qt-things.
-      # They are provided by the kde build-snap (kde-neon extension).
-      # Same thing for stage-packages.
-      #
-      # - qml-module-qtcharts
-      # - qml-module-qtgraphicaleffects
-      # - qml-module-qt-labs-folderlistmodel
-      # - qml-module-qt-labs-platform
-      # - qml-module-qt-labs-settings
-      # - qml-module-qtlocation
-      # - qml-module-qtpositioning
-      # - qml-module-qtqml-models2
-      # - qml-module-qtquick2
-      # - qml-module-qtquick-controls
-      # - qml-module-qtquick-controls2
-      # - qml-module-qtquick-dialogs
-      # - qml-module-qtquick-layouts
-      # - qml-module-qtquick-templates2
-      # - qml-module-qtquick-window2
-      # - qtbase5-dev
-      # - qtdeclarative5-dev
-      # - qtquickcontrols2-5-dev
       - rubocop
       - ruby
       - ruby-dev
@@ -168,8 +145,8 @@ parts:
       - ros-foxy-ros-environment
       - libstdc++6
       - libgcc1
-      - libc6
       - libyaml-0-2
+        #- libc6
 
     override-pull: |
       if [ ! -f collection-fortress.yaml ]; then wget https://raw.githubusercontent.com/ignition-tooling/gazebodistro/master/collection-fortress.yaml; fi
@@ -192,12 +169,17 @@ apps:
       RUBYLIB: '$SNAP/usr/local/lib/site_ruby/2.7.0:$SNAP/usr/local/lib/$SNAPCRAFT_ARCH_TRIPLET/site_ruby:$SNAP/usr/local/lib/site_ruby:$SNAP/usr/lib/ruby/vendor_ruby/2.7.0:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/ruby/vendor_ruby/2.7.0:$SNAP/usr/lib/ruby/vendor_ruby:$SNAP/usr/lib/ruby/2.7.0:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/ruby/2.7.0'
       IGN_HOMEDIR: '$SNAP_USER_DATA'
       IGN_CONFIG_PATH: '$SNAP/opt/ros/snap/share/ignition'
-      IGN_RENDERING_RESOURCE_PATH: '$SNAP/opt/ros/snap/share/ignition/ignition-rendering3'
-      IGN_GAZEBO_PHYSICS_ENGINE_PATH: '$SNAP/opt/ros/snap/lib/ign-physics-2/engine-plugins'
+      IGN_RENDERING_RESOURCE_PATH: '$SNAP/opt/ros/snap/share/ignition/ignition-rendering6'
+      IGN_RENDERING_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-rendering-6/engine-plugins'
+      IGN_GAZEBO_RENDER_ENGINE_PATH: '$SNAP/opt/ros/snap/lib/ign-rendering-6/engine-plugins'
+      IGN_GAZEBO_PHYSICS_ENGINE_PATH: '${SNAP}/opt/ros/snap/lib/ign-physics-5/engine-plugins'
+      IGN_GAZEBO_SYSTEM_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins'
+      IGN_GUI_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins/gui:$SNAP/opt/ros/snap/lib'
       OGRE_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-1.9.0'
-      OGRE2_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-2.1/OGRE'
+      OGRE2_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-2.2/OGRE'
+      QML2_IMPORT_PATH: ${SNAP}/opt/ros/snap/lib/ign-gazebo-6/plugins/gui
       ROS_DISTRO: foxy
-      LD_LIBRARY_PATH: ${SNAP}/usr/lib/x86_64-linux-gnu/:${SNAP}/opt/ros/snap/lib:${LD_LIBRARY_PATH}
+      LD_LIBRARY_PATH: ${SNAP}/usr/lib/x87_64-linux-gnu/:${SNAP}/opt/ros/snap/lib:${LD_LIBRARY_PATH}
     command: usr/bin/ruby $SNAP/opt/ros/snap/bin/ign
     plugs: [network, network-bind, home]
     extensions: [kde-neon, ros2-foxy]
