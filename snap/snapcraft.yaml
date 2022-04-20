@@ -174,7 +174,7 @@ apps:
       IGN_GAZEBO_RENDER_ENGINE_PATH: '$SNAP/opt/ros/snap/lib/ign-rendering-6/engine-plugins'
       IGN_GAZEBO_PHYSICS_ENGINE_PATH: '${SNAP}/opt/ros/snap/lib/ign-physics-5/engine-plugins'
       IGN_GAZEBO_SYSTEM_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins'
-      IGN_GUI_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins/gui:$SNAP/opt/ros/snap/lib'
+      IGN_GUI_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins/gui'
       OGRE_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-1.9.0'
       OGRE2_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-2.2/OGRE'
       QML2_IMPORT_PATH: ${SNAP}/opt/ros/snap/lib/ign-gazebo-6/plugins/gui
