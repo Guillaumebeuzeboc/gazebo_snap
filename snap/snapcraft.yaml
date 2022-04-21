@@ -18,9 +18,15 @@ package-repositories:
     suites: [focal]
     type: apt
     url: http://packages.osrfoundation.org/gazebo/ubuntu-stable
+  # For kde qt additional libraries
+  - components: [main]
+    key-id: 444DABCF3667D0283F894EDDE6D4736255751E5D
+    key-server: keyserver.ubuntu.com
+    suites: [focal]
+    type: apt
+    url: http://origin.archive.neon.kde.org/user
 
 parts:
-
   ignition:
     after: [kde-neon-extension]
     plugin: colcon
@@ -133,6 +139,7 @@ parts:
       - libstdc++6
       - libgcc1
       - libyaml-0-2
+      - qml-module-qtcharts
 
     override-pull: |
       if [ ! -f collection-fortress.yaml ]; then wget https://raw.githubusercontent.com/ignition-tooling/gazebodistro/master/collection-fortress.yaml; fi
@@ -158,13 +165,13 @@ apps:
       IGN_RENDERING_RESOURCE_PATH: '$SNAP/opt/ros/snap/share/ignition/ignition-rendering6'
       IGN_RENDERING_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-rendering-6/engine-plugins'
       IGN_GAZEBO_RENDER_ENGINE_PATH: '$SNAP/opt/ros/snap/lib/ign-rendering-6/engine-plugins'
-      IGN_GAZEBO_PHYSICS_ENGINE_PATH: '${SNAP}/opt/ros/snap/lib/ign-physics-5/engine-plugins'
+      IGN_GAZEBO_PHYSICS_ENGINE_PATH: '$SNAP/opt/ros/snap/lib/ign-physics-5/engine-plugins'
       IGN_GAZEBO_SYSTEM_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins'
       IGN_GUI_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins/gui'
       OGRE2_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-2.2/OGRE'
-      QML2_IMPORT_PATH: ${SNAP}/opt/ros/snap/lib/ign-gazebo-6/plugins/gui
+      QML2_IMPORT_PATH: 'SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins/gui'
       ROS_DISTRO: foxy
-      LD_LIBRARY_PATH: ${SNAP}/usr/lib/x87_64-linux-gnu/:${SNAP}/opt/ros/snap/lib:${LD_LIBRARY_PATH}
+      LD_LIBRARY_PATH: ${SNAP}/usr/lib/x87_64-linux-gnu:${SNAP}/opt/ros/snap/lib:${LD_LIBRARY_PATH}
     command: usr/bin/ruby $SNAP/opt/ros/snap/bin/ign
     plugs: [network, network-bind, home]
     extensions: [kde-neon, ros2-foxy]
