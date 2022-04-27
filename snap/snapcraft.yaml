@@ -35,13 +35,14 @@ parts:
       - "-DBUILD_TESTING=OFF"
       - "-DBUILD_DOCS=OFF"
       - "-DCMAKE_BUILD_TYPE=Release"
-      - "-Wno-unused-variable"
       - "-DCMAKE_C_COMPILER_LAUNCHER=ccache"
       - "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+      - "-DSKIP_usd=true"
+      - "-DSKIP_optix=true"
+      # We skip RPATH to hide warnings regarding libraries that are available at two different places, preventing a safe RPATH generation
+      - "-DCMAKE_SKIP_RPATH=TRUE"
       - "${SNAPCRAFT_CMAKE_ARGS}"
       - "--event-handlers=console_direct+"
-    build-environment:
-      - CMAKE_PREFIX_PATH: "/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current"
     build-packages:
       - wget
       - git
