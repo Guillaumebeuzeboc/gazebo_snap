@@ -170,6 +170,7 @@ apps:
       IGN_GAZEBO_SYSTEM_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins'
       IGN_GUI_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins/gui'
       OGRE2_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-2.2/OGRE'
+      OGRE_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-1.9.0'
       QML2_IMPORT_PATH: 'SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins/gui'
       ROS_DISTRO: foxy
       LD_LIBRARY_PATH: ${SNAP}/usr/lib/x87_64-linux-gnu:${SNAP}/opt/ros/snap/lib:${LD_LIBRARY_PATH}
