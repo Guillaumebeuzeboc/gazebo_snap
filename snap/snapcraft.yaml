@@ -43,9 +43,10 @@ parts:
       - "-DCMAKE_SKIP_RPATH=TRUE"
       - "${SNAPCRAFT_CMAKE_ARGS}"
       - "--event-handlers=console_direct+"
+    build-environment:
+      - IGNITION_VERSION: fortress
     build-packages:
-      - wget
-      - git
+      - wget - git
       - python3-vcstool
       - ccache
       - binutils-dev
@@ -96,6 +97,9 @@ parts:
       - swig
       - uuid-dev
       - xvfb
+        #- ros-foxy-controller-interface
+        #- ros-foxy-control-msgs
+        #- ros-foxy-angles
 
     stage-packages:
       - libcurl4
@@ -137,25 +141,67 @@ parts:
       - libogre-1.9.0v5
       - libogre-2.2
       - ros-foxy-ros-environment
+        #- ros-foxy-ros2-controllers
+        #- ros-foxy-ign-ros2-control
       - libstdc++6
       - libgcc1
       - libyaml-0-2
       - qml-module-qtcharts
 
     override-pull: |
+      export IGNITION_VERSION=fortress
+      snapcraftctl pull
       if [ ! -f collection-fortress.yaml ]; then wget https://raw.githubusercontent.com/ignition-tooling/gazebodistro/master/collection-fortress.yaml; fi
       vcs import < collection-fortress.yaml
+      vcs import < ros2-controllers.yaml
+      rm -rf ign_ros2_control/ign_ros2_control_demos
+
+      mv ign_packages_XML/ign-cmake.xml ign-cmake/package.xml
+      mv ign_packages_XML/ign-common.xml ign-common/package.xml
+      mv ign_packages_XML/ign-fuel-tools.xml ign-fuel-tools/package.xml
+      mv ign_packages_XML/ign-gazebo.xml ign-gazebo/package.xml
+      mv ign_packages_XML/ign-gui.xml ign-gui/package.xml
+      mv ign_packages_XML/ign-launch.xml ign-launch/package.xml
+      mv ign_packages_XML/ign-math.xml ign-math/package.xml
+      mv ign_packages_XML/ign-msgs.xml ign-msgs/package.xml
+      mv ign_packages_XML/ign-physics.xml ign-physics/package.xml
+      mv ign_packages_XML/ign-plugin.xml ign-plugin/package.xml
+      mv ign_packages_XML/ign-rendering.xml ign-rendering/package.xml
+      mv ign_packages_XML/ign-sensors.xml ign-sensors/package.xml
+      mv ign_packages_XML/ign-tools.xml ign-tools/package.xml
+      mv ign_packages_XML/ign-transport.xml ign-transport/package.xml
+      mv ign_packages_XML/ign-utils.xml ign-utils/package.xml
+      mv ign_packages_XML/sdformat.xml sdformat/package.xml
 
       sed -i 's|\${CMAKE_INSTALL_PREFIX}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-gazebo/include/ignition/gazebo/config.hh.in
       sed -i 's|\${CMAKE_INSTALL_PREFIX}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-gui/include/ignition/gui/config.hh.in
       sed -i 's|@IGN_SENSORS_PLUGIN_PATH@|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-sensors/include/ignition/sensors/config.hh.in
       sed -i 's|\${IGNITION_RENDERING_ENGINE_INSTALL_DIR}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-rendering/include/ignition/rendering/config.hh.in
 
+      sed -i 's|ignition-plugin<|ignition-plugin1<|' ign_ros2_control/ign_ros2_control/package.xml
+
     override-build: |
+      export IGNITION_VERSION=fortress
       snapcraftctl build
       for entry in "$SNAPCRAFT_PART_INSTALL/opt/ros/snap/share/ignition"/*.yaml; do
         sed -i "s|$SNAPCRAFT_PART_INSTALL|/snap/$SNAPCRAFT_PROJECT_NAME/current|" "$entry"
       done
+
+      #  ros2-controllers:
+      #    after: [ignition]
+      #    plugin: colcon
+      #    source: .
+      #    build-environment:
+      #      - IGNITION_VERSION: fortress
+      #    override-pull: |
+      #      snapcraftctl pull
+      #      export IGNITION_VERSION=fortress
+      #
+      #      sed -i '/ignition-.*<\/depend/d' ros_ign_gazebo/ros_ign_point_cloud/package.xml
+      #      sed -i '/ignition-.*<\/depend/d' ros_ign_gazebo/ros_ign_gazebo/package.xml
+      #      sed -i '/ignition-.*<\/depend/d' ros_ign_gazebo/ros_ign_image/package.xml
+      #      sed -i '/ignition-.*<\/depend/d' ros_ign_gazebo/ros_ign_bridge/package.xml 
+      #      sed -i '/ignition-.*<\/depend/d' ign_ros2_control/ign_ros2_control/package.xml
 
 apps:
   ign:

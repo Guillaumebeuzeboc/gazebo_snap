@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ignition-rendering6</name>
+  <version>6.3.1</version>
+  <description>WIP</description>
+  <maintainer email="wip@wip.com">WIP</maintainer>
+  <author>WIP</author>
+  <license>WIP</license>
+
+  <depend>ignition-cmake2</depend>
+  <depend>ignition-common4</depend>
+  <depend>ignition-math6</depend>
+  <depend>ignition-plugin1</depend>
+
+</package>

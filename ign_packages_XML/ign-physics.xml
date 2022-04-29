@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ignition-physics5</name>
+  <version>5.1.0</version>
+  <description>WIP</description>
+  <maintainer email="wip@wip.com">WIP</maintainer>
+  <author>WIP</author>
+  <license>WIP</license>
+
+  <depend>ignition-cmake2</depend>
+  <depend>ignition-common4</depend>
+  <depend>ignition-math6</depend>
+  <depend>ignition-plugin1</depend>
+  <depend>ignition-utils1</depend>
+  <depend>sdformat12</depend>
+  <depend>ignition-msgs8</depend>
+
+</package>
