@@ -7,8 +7,8 @@
   <author>WIP</author>
   <license>WIP</license>
 
-  <depend>ignition-cmake2</depend>
-  <depend>ignition-math6</depend>
-  <depend>ignition-utils1</depend>
+  <build_depend>ignition-cmake2</build_depend>
+  <build_depend>ignition-math6</build_depend>
+  <build_depend>ignition-utils1</build_depend>
 
 </package>
