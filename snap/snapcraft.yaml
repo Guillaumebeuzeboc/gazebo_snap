@@ -142,7 +142,7 @@ parts:
       - libogre-1.9.0v5
       - libogre-2.2
       - ros-foxy-ros-environment
-        #- ros-foxy-ros2-controllers
+      - ros-foxy-ros2-controllers
         #- ros-foxy-ign-ros2-control
       - libstdc++6
       - libgcc1
@@ -155,24 +155,11 @@ parts:
       if [ ! -f collection-fortress.yaml ]; then wget https://raw.githubusercontent.com/ignition-tooling/gazebodistro/master/collection-fortress.yaml; fi
       vcs import < collection-fortress.yaml
       vcs import < ros2-controllers.yaml
+      # delete the directory since we don't want rosdep to pull the deps
       rm -rf ign_ros2_control/ign_ros2_control_demos
 
-      mv ign_packages_XML/ign-cmake.xml ign-cmake/package.xml
-      mv ign_packages_XML/ign-common.xml ign-common/package.xml
-      mv ign_packages_XML/ign-fuel-tools.xml ign-fuel-tools/package.xml
-      mv ign_packages_XML/ign-gazebo.xml ign-gazebo/package.xml
-      mv ign_packages_XML/ign-gui.xml ign-gui/package.xml
-      mv ign_packages_XML/ign-launch.xml ign-launch/package.xml
-      mv ign_packages_XML/ign-math.xml ign-math/package.xml
-      mv ign_packages_XML/ign-msgs.xml ign-msgs/package.xml
-      mv ign_packages_XML/ign-physics.xml ign-physics/package.xml
-      mv ign_packages_XML/ign-plugin.xml ign-plugin/package.xml
-      mv ign_packages_XML/ign-rendering.xml ign-rendering/package.xml
-      mv ign_packages_XML/ign-sensors.xml ign-sensors/package.xml
-      mv ign_packages_XML/ign-tools.xml ign-tools/package.xml
-      mv ign_packages_XML/ign-transport.xml ign-transport/package.xml
-      mv ign_packages_XML/ign-utils.xml ign-utils/package.xml
-      mv ign_packages_XML/sdformat.xml sdformat/package.xml
+      # place artifical package.xml files in ign directories
+      ls ign_packages_XML | awk -F. '{print $1}' | awk '{printf("mv ign_packages_XML/%s.xml %s/package.xml\n", $1, $1)}'
 
       sed -i 's|\${CMAKE_INSTALL_PREFIX}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-gazebo/include/ignition/gazebo/config.hh.in
       sed -i 's|\${CMAKE_INSTALL_PREFIX}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-gui/include/ignition/gui/config.hh.in
@@ -216,7 +203,7 @@ apps:
       IGN_RENDERING_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-rendering-6/engine-plugins'
       IGN_GAZEBO_RENDER_ENGINE_PATH: '$SNAP/opt/ros/snap/lib/ign-rendering-6/engine-plugins'
       IGN_GAZEBO_PHYSICS_ENGINE_PATH: '$SNAP/opt/ros/snap/lib/ign-physics-5/engine-plugins'
-      IGN_GAZEBO_SYSTEM_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins'
+      IGN_GAZEBO_SYSTEM_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib'
       IGN_GUI_PLUGIN_PATH: '$SNAP/opt/ros/snap/lib/ign-gazebo-6/plugins/gui'
       OGRE2_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-2.2/OGRE'
       OGRE_RESOURCE_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/OGRE-1.9.0'
