@@ -159,7 +159,7 @@ parts:
       rm -rf ign_ros2_control/ign_ros2_control_demos
 
       # place artifical package.xml files in ign directories
-      ls ign_packages_XML | awk -F. '{print $1}' | awk '{printf("mv ign_packages_XML/%s.xml %s/package.xml\n", $1, $1)}'
+      ls ign_packages_XML | awk -F. '{print $1}' | awk '{printf("mv ign_packages_XML/%s.xml %s/package.xml\n", $1, $1)}' | sh
 
       sed -i 's|\${CMAKE_INSTALL_PREFIX}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-gazebo/include/ignition/gazebo/config.hh.in
       sed -i 's|\${CMAKE_INSTALL_PREFIX}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap|' ign-gui/include/ignition/gui/config.hh.in
