@@ -7,4 +7,6 @@
   <author>WIP</author>
   <license>WIP</license>
 
+  <build_depend>ignition-tools</build_depend>
+
 </package>

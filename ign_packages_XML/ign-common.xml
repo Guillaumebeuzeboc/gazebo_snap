@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>ignition-common4</name>
-  <version>4.5.0</version>
+  <name>ignition-common3</name>
+  <version>3.14.0</version>
   <description>WIP</description>
   <maintainer email="wip@wip.com">WIP</maintainer>
   <author>WIP</author>
@@ -9,6 +9,5 @@
 
   <build_depend>ignition-cmake2</build_depend>
   <build_depend>ignition-math6</build_depend>
-  <build_depend>ignition-utils1</build_depend>
 
 </package>
