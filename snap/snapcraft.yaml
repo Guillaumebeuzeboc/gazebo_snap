@@ -175,3 +175,4 @@ apps:
     command: usr/bin/ruby $SNAP/opt/ros/snap/bin/ign
     plugs: [network, network-bind, home]
     extensions: [kde-neon, ros2-foxy]
+
