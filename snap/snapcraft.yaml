@@ -156,9 +156,6 @@ parts:
       sed -i 's|<depend>ignition-plugin<\/depend>|<build_depend>ignition-plugin1<\/build_depend>|' ign_ros2_control/ign_ros2_control/package.xml
       sed -i '/ignition-.*<\/depend/s/depend/build_depend/g' ign_ros2_control/ign_ros2_control/package.xml
 
-      # fix typo
-      sed -i 's|cidadel|citadel|' ign_ros2_control/ign_ros2_control/package.xml
-
     override-build: |
       snapcraftctl build
       for entry in "$SNAPCRAFT_PART_INSTALL/opt/ros/snap/share/ignition"/*.yaml; do
