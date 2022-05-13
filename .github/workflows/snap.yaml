@@ -2,10 +2,12 @@ name: snap
 on:
   push:
     branches:
-      - master
+      - citadel
+      - fortress
   pull_request:
     branches:
-      - master
+      - citadel
+      - fortress
   workflow_dispatch:
 
 

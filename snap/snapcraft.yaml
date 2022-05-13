@@ -206,7 +206,7 @@ apps:
   # We're not creating the `gazebo` app just yet has this could conflict
   # with a (non-Ignition) Gazebo prior install.
 
-  ign:
+  gz:
     environment:
       RUBYLIB: '$SNAP/usr/local/lib/site_ruby/2.7.0:$SNAP/usr/local/lib/$SNAPCRAFT_ARCH_TRIPLET/site_ruby:$SNAP/usr/local/lib/site_ruby:$SNAP/usr/lib/ruby/vendor_ruby/2.7.0:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/ruby/vendor_ruby/2.7.0:$SNAP/usr/lib/ruby/vendor_ruby:$SNAP/usr/lib/ruby/2.7.0:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/ruby/2.7.0'
       IGN_HOMEDIR: '$SNAP_USER_DATA'
@@ -218,4 +218,3 @@ apps:
     command: usr/bin/ruby $SNAP/opt/ros/snap/bin/ign
     plugs: [network, network-bind, home]
     extensions: [kde-neon, ros2-foxy]
-
