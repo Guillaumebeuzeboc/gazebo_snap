@@ -1,12 +1,12 @@
 <h1 align="center" default="https://ignitionrobotics.org/home">
   <a href="https://ignitionrobotics.org/home">
-    <img src="/snap/gui/icon.svg" alt="Ignition">
+    <img src="/snap/gui/icon.svg" alt="Gazebo">
   </a>
   <br />
-  Ignition
+  Gazebo
 </h1>
 
-<p align="center"><b>This is the snap for Ignition</b>, a curated set of open-source libraries
+<p align="center"><b>This is the snap for Gazebo</b>, a curated set of open-source libraries
 that encapsulate all the essentials for robotic simulation.</p>
 
 <!-- Uncomment and modify this when you are provided a build status badge
@@ -17,7 +17,7 @@ that encapsulate all the essentials for robotic simulation.</p>
 
 ## Install
 
-    sudo snap install ignition-robotics --edge
+    sudo snap install gazebo --beta
 
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
 
@@ -33,3 +33,15 @@ with an empty world.
 
 You can also simply search for `Ignition-robotics` in the dash.
 It open gazebo and is equivalent to the command `ignition-robotics.ign gazebo`.
+
+## Troubleshooting
+
+```bash
+Qt: Session management error: Could not open network socket
+```
+
+Try the following before launching Gazebo,
+
+```bash
+unset SESSION_MANAGER
+```

@@ -1,13 +1,52 @@
-name: ignition-gazebo
-version: "citadel"
-summary: Ignition
+name: gazebo
+version: citadel
+summary: Simulate before you build.
 description: |
-  Ignition Robotics is a curated set of open-source libraries
-  that encapsulate all the essentials for robotic simulation.
+  Gazebo (formerly known as Ignition [1]) is an open source robotics simulator maintained by Open Robotics [2].
+
+  Through Gazebo, users have access to high fidelity physics, rendering, and sensor models.
+  Additionally, users and developers have multiple points of entry to simulation,
+  including a graphical user interface, plugins, and asynchronous message passing and services.
+
+  Gazebo brings a fresh approach to simulation with a complete toolbox of development libraries and cloud services to make simulation easy.
+  Iterate fast on your new physical designs in realistic environments with high fidelity sensor streams.
+  Test control strategies in safety, and take advantage of simulation in continuous integration tests.
+
+  **Note**: This is a beta release, do expect bugs and limitations. If you encounter any, please do report it [3].
+
+  Installation Instructions:
+
+  * Install Gazebo from a terminal,
+
+  `snap install gazebo --edge`
+
+  * Test your installation,
+
+  `gazebo.gz gazebo shapes.sdf`
+
+  If you are following the Gazebo 'Getting Started' documentation, you can replace the entire 'Step 1: Install' with the snap command and resume at 'Step 2: Run'.
+
+  Learn more about Gazebo on the official website [4].
+
+  [1] https://community.gazebosim.org/t/a-new-era-for-gazebo/1356
+
+  [2] https://openrobotics.org/
+
+  [3] https://github.com/canonical/ignition_snap
+
+  [4] https://ignitionrobotics.org/home
+
+issues: https://github.com/canonical/ignition_snap
+source-code: https://github.com/canonical/ignition_snap
+license: Apache-2.0
 
 grade: devel
 confinement: strict
 base: core20
+
+# The 'kde-neon' extension is only supported for amd64 atm.
+# Gazebo support for arm64 is 'best-effort'
+architectures: [amd64]
 
 package-repositories:
   # For dart/ogre
@@ -20,7 +59,7 @@ package-repositories:
     url: http://packages.osrfoundation.org/gazebo/ubuntu-stable
 
 parts:
-  ignition:
+  gazebo:
     after: [kde-neon-extension]
     plugin: colcon
     source: .
@@ -163,7 +202,11 @@ parts:
       done
 
 apps:
-  ign:
+
+  # We're not creating the `gazebo` app just yet has this could conflict
+  # with a (non-Ignition) Gazebo prior install.
+
+  gz:
     environment:
       RUBYLIB: '$SNAP/usr/local/lib/site_ruby/2.7.0:$SNAP/usr/local/lib/$SNAPCRAFT_ARCH_TRIPLET/site_ruby:$SNAP/usr/local/lib/site_ruby:$SNAP/usr/lib/ruby/vendor_ruby/2.7.0:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/ruby/vendor_ruby/2.7.0:$SNAP/usr/lib/ruby/vendor_ruby:$SNAP/usr/lib/ruby/2.7.0:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/ruby/2.7.0'
       IGN_HOMEDIR: '$SNAP_USER_DATA'
@@ -175,4 +218,3 @@ apps:
     command: usr/bin/ruby $SNAP/opt/ros/snap/bin/ign
     plugs: [network, network-bind, home]
     extensions: [kde-neon, ros2-foxy]
-
