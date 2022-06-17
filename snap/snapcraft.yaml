@@ -72,10 +72,10 @@ parts:
       - "-DSKIP_usd=true"
       - "-DSKIP_optix=true"
       # We skip RPATH to hide warnings regarding libraries that are available at two different places, preventing a safe RPATH generation
-      #- "-DCMAKE_SKIP_RPATH=TRUE"
+      - "-DCMAKE_SKIP_RPATH=TRUE"
       #- "${SNAPCRAFT_CMAKE_ARGS}"
       #- "-DCMAKE_FIND_ROOT_PATH=/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current"
-      - "-DCMAKE_FIND_ROOT_PATH=/usr/lib/x86_64-linux-gnu:/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current"
+      #- "-DCMAKE_FIND_ROOT_PATH=/usr/lib/x86_64-linux-gnu:/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current"
       - "-DCMAKE_PREFIX_PATH=/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current/usr/lib/x86_64-linux-gnu/cmake/Qt5"
         #- "-DOpenSSL_ROOT=/usr/lib/x86_64-linux-gnu"
         #- "-DCMAKE_POLICY_DEFAULT_CMP0074=NEW"
@@ -180,8 +180,7 @@ parts:
       - libogre-2.1
       - ros-foxy-ros-environment
       - ros-foxy-ros2-controllers
-        #- ros-foxy-controller-manager
-      - libgflags2.2
+        #      - libgflags2.2
 
     override-pull: |
       snapcraftctl pull
@@ -212,10 +211,6 @@ parts:
       sed -i '/ignition-.*<\/depend/s/depend/build_depend/g' ign_ros2_control/ign_ros2_control/package.xml
       find ros_gz -name package.xml -exec sed -i '/ignition-.*<\/depend/s/depend/build_depend/g' {} \;
 
-
-      #     sed -i '/find_package(ament_cmake REQUIRED)/a find_package(OpenSSL REQUIRED)' ros_gz/ros_ign_interfaces/CMakeLists.txt
-      # temporary
-      #     sed -i '/find_package(ament_cmake REQUIRED)/a find_package(Qt5 COMPONENTS Core REQUIRED)' ros_gz/ros_ign_interfaces/CMakeLists.txt
       sed -i '/ros_ign_gazebo_demos/d' ros_gz/ros_ign/package.xml
 
     override-build: |
