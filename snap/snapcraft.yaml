@@ -73,15 +73,7 @@ parts:
       - "-DSKIP_optix=true"
       # We skip RPATH to hide warnings regarding libraries that are available at two different places, preventing a safe RPATH generation
       - "-DCMAKE_SKIP_RPATH=TRUE"
-      #- "${SNAPCRAFT_CMAKE_ARGS}"
-      #- "-DCMAKE_FIND_ROOT_PATH=/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current"
-      #- "-DCMAKE_FIND_ROOT_PATH=/usr/lib/x86_64-linux-gnu:/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current"
       - "-DCMAKE_PREFIX_PATH=/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current/usr/lib/x86_64-linux-gnu/cmake/Qt5"
-        #- "-DOpenSSL_ROOT=/usr/lib/x86_64-linux-gnu"
-        #- "-DCMAKE_POLICY_DEFAULT_CMP0074=NEW"
-        #- "-DCMAKE_MODULE_PATH=/snap/kde-frameworks-5-91-qt-5-15-3-core20-sdk/current/usr/lib/x86_64-linux-gnu/cmake/Qt5"
-        #- "-DOpenSSL_ROOT=/usr/lib/x86_64-linux-gnu"
-        #- "-DCMAKE_PREFIX_PATH="
       - "--event-handlers=console_direct+"
     build-environment:
       - IGNITION_VERSION: citadel
@@ -218,7 +210,7 @@ parts:
       for entry in "$SNAPCRAFT_PART_INSTALL/opt/ros/snap/share/ignition"/*.yaml; do
         sed -i "s|$SNAPCRAFT_PART_INSTALL|/snap/$SNAPCRAFT_PROJECT_NAME/current|" "$entry"
       done
- 
+
   fastdds-no-shared-memory:
     plugin: dump
     source: snap/local/
@@ -251,3 +243,16 @@ apps:
     plugs: [network, network-bind, home]
     extensions: [ros2-foxy]
 
+  ros-gz-parameter-bridge:
+    command: opt/ros/foxy/bin/ros2 run ros_ign_bridge parameter_bridge
+    environment:
+        FASTRTPS_DEFAULT_PROFILES_FILE: ${SNAP}/usr/share/fastdds_no_shared_memory.xml
+    plugs: [network, network-bind, home]
+    extensions: [ros2-foxy]
+
+  ros-gz-static-bridge:
+    command: opt/ros/foxy/bin/ros2 run ros_ign_bridge static_bridge
+    environment:
+        FASTRTPS_DEFAULT_PROFILES_FILE: ${SNAP}/usr/share/fastdds_no_shared_memory.xml
+    plugs: [network, network-bind, home]
+    extensions: [ros2-foxy]
