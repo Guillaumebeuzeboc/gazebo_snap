@@ -180,7 +180,6 @@ parts:
       - libogre-2.1
       - ros-foxy-ros-environment
       - ros-foxy-ros2-controllers
-        #      - libgflags2.2
 
     override-pull: |
       snapcraftctl pull
@@ -207,6 +206,7 @@ parts:
       sed -i "s|@IGN_SENSORS_PLUGIN_PATH@|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap/lib|" ign-sensors/include/ignition/sensors/config.hh.in
       sed -i 's|\${IGNITION_RENDERING_ENGINE_INSTALL_DIR}|/snap/$SNAPCRAFT_PROJECT_NAME/current/opt/ros/snap/lib/ign-rendering-3/engine-plugins|' ign-rendering/include/ignition/rendering/config.hh.in
 
+      # artificial ign package.xml are not "installed" so rosdep try to redownload them
       sed -i 's|<depend>ignition-plugin<\/depend>|<build_depend>ignition-plugin1<\/build_depend>|' ign_ros2_control/ign_ros2_control/package.xml
       sed -i '/ignition-.*<\/depend/s/depend/build_depend/g' ign_ros2_control/ign_ros2_control/package.xml
       find ros_gz -name package.xml -exec sed -i '/ignition-.*<\/depend/s/depend/build_depend/g' {} \;
@@ -218,6 +218,12 @@ parts:
       for entry in "$SNAPCRAFT_PART_INSTALL/opt/ros/snap/share/ignition"/*.yaml; do
         sed -i "s|$SNAPCRAFT_PART_INSTALL|/snap/$SNAPCRAFT_PROJECT_NAME/current|" "$entry"
       done
+ 
+  fastdds-no-shared-memory:
+    plugin: dump
+    source: snap/local/
+    organize:
+      'fastdds_no_shared_memory.xml': usr/share/
 
 apps:
 
@@ -240,6 +246,8 @@ apps:
 
   ros-gz-create:
     command: opt/ros/foxy/bin/ros2 run ros_ign_gazebo create
+    environment:
+        FASTRTPS_DEFAULT_PROFILES_FILE: ${SNAP}/usr/share/fastdds_no_shared_memory.xml
     plugs: [network, network-bind, home]
     extensions: [ros2-foxy]
 
